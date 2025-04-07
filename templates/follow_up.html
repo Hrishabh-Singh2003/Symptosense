@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow-up Questions - SymptoSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Additional Questions</h1>
+        <p>To provide a more accurate diagnosis, please answer these follow-up questions about your symptoms:</p>
+        
+        <form action="{{ url_for('predict') }}" method="post">
+            <input type="hidden" name="symptoms" value="{{ symptoms }}">
+            
+            {% for question in questions %}
+            <div class="question-container">
+                <label for="answer_{{ loop.index }}">{{ question }}</label>
+                <input type="text" id="answer_{{ loop.index }}" name="follow_up_answers[]" required>
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="submit-btn">Get Diagnosis</button>
+        </form>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SymptoSense - Health Diagnosis Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-heartbeat"></i> SymptoSense</h1>
+            <p class="subtitle">Your AI-powered health diagnosis assistant</p>
+        </div>
+
+        <div class="symptom-form">
+            <form action="{{ url_for('predict') }}" method="post">
+                <div class="form-group">
+                    <label for="symptoms">Describe your symptoms:</label>
+                    <div class="input-wrapper">
+                        <textarea id="symptoms" name="symptoms" class="form-control" 
+                                placeholder="Enter your symptoms (e.g., fever, headache, cough...)" 
+                                required></textarea>
+                        <div class="symptom-tags">
+                            <span class="tag">fever</span>
+                            <span class="tag">headache</span>
+                            <span class="tag">cough</span>
+                            <span class="tag">fatigue</span>
+                            <span class="tag">pain</span>
+                            <span class="tag">nausea</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Select symptom categories:</label>
+                    <div class="category-grid">
+                        <div class="category-card" data-category="respiratory">
+                            <i class="fas fa-lungs"></i>
+                            <span>Respiratory</span>
+                        </div>
+                        <div class="category-card" data-category="headache">
+                            <i class="fas fa-head-side-virus"></i>
+                            <span>Headache</span>
+                        </div>
+                        <div class="category-card" data-category="gastrointestinal">
+                            <i class="fas fa-stomach"></i>
+                            <span>Gastrointestinal</span>
+                        </div>
+                        <div class="category-card" data-category="cardiac">
+                            <i class="fas fa-heart"></i>
+                            <span>Cardiac</span>
+                        </div>
+                        <div class="category-card" data-category="skin">
+                            <i class="fas fa-allergies"></i>
+                            <span>Skin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-search"></i> Get Diagnosis
+                </button>
+            </form>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-robot"></i>
+                <h3>AI-Powered Diagnosis</h3>
+                <p>Advanced machine learning algorithms analyze your symptoms</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Comprehensive Analysis</h3>
+                <p>Detailed symptom analysis with follow-up questions</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-prescription-bottle-alt"></i>
+                <h3>Treatment Recommendations</h3>
+                <p>Personalized treatment and prevention advice</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add click handlers for symptom tags
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                const symptoms = document.getElementById('symptoms');
+                const currentSymptoms = symptoms.value;
+                const newSymptom = tag.textContent;
+                
+                if (currentSymptoms) {
+                    symptoms.value = currentSymptoms + ', ' + newSymptom;
+                } else {
+                    symptoms.value = newSymptom;
+                }
+            });
+        });
+
+        // Add click handlers for category cards
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const category = card.dataset.category;
+                const commonSymptoms = {
+                    respiratory: 'cough, shortness of breath, chest pain',
+                    headache: 'headache, sensitivity to light, nausea',
+                    gastrointestinal: 'abdominal pain, nausea, vomiting',
+                    cardiac: 'chest pain, shortness of breath, fatigue',
+                    skin: 'rash, itching, swelling'
+                };
+
+                const symptoms = document.getElementById('symptoms');
+                const currentSymptoms = symptoms.value;
+                
+                if (currentSymptoms) {
+                    symptoms.value = currentSymptoms + ', ' + commonSymptoms[category];
+                } else {
+                    symptoms.value = commonSymptoms[category];
+                }
+            });
+        });
+    </script>
+</body>
+</html>
