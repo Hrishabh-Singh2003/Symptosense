@@ -18,18 +18,21 @@ from scipy.sparse import hstack
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def download_nltk_data():
+    """Download required NLTK data"""
+    try:
+        nltk.download('punkt')
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+        nltk.download('omw-1.4')  # This is often needed for WordNet
+    except Exception as e:
+        logger.error(f"Error downloading NLTK data: {str(e)}")
+        raise
+
+download_nltk_data()
+
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Required for session management
-
-# Download required NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
-    nltk.data.find('corpora/wordnet')
-except LookupError:
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('wordnet')
 
 # Enhanced follow-up questions with more detailed categories
 FOLLOW_UP_QUESTIONS = {
