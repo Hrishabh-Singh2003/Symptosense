@@ -21,13 +21,24 @@ logger = logging.getLogger(__name__)
 def download_nltk_data():
     """Download required NLTK data"""
     try:
-        nltk.download('punkt')
-        nltk.download('stopwords')
-        nltk.download('wordnet')
-        nltk.download('omw-1.4')  # This is often needed for WordNet
+        # Create data directory if it doesn't exist
+        nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')
+        if not os.path.exists(nltk_data_dir):
+            os.makedirs(nltk_data_dir)
+        
+        # Set NLTK data path
+        nltk.data.path.append(nltk_data_dir)
+        
+        # Download required NLTK data
+        for package in ['punkt', 'stopwords', 'wordnet', 'omw-1.4']:
+            try:
+                nltk.data.find(f'tokenizers/{package}')
+            except LookupError:
+                nltk.download(package, download_dir=nltk_data_dir)
     except Exception as e:
         logger.error(f"Error downloading NLTK data: {str(e)}")
-        raise
+        # Continue execution even if download fails
+        pass
 
 download_nltk_data()
 
@@ -488,5 +499,12 @@ def predict():
         return render_template("error.html", error="Unable to process request. Please try again.")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000)
+    # Initialize NLTK data
+    download_nltk_data()
+    
+    # Get port from environment variable or default to 10000
+    port = int(os.environ.get("PORT", 10000))
+    
+    # Run the app
+    app.run(host='0.0.0.0', port=port)
 
