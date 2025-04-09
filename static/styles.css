@@ -99,7 +99,7 @@ textarea.form-control:focus {
 }
 
 .tag:hover {
-    background-color: #2980b9;
+    background-color: #aeb7bd;
     color: white;
     transform: translateY(-2px);
 }

@@ -485,5 +485,5 @@ def predict():
         return render_template("error.html", error="Unable to process request. Please try again.")
 
 if __name__ == "__main__":
-    webbrowser.open("http://127.0.0.1:5000/")  # Auto-opens browser
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000)
+
