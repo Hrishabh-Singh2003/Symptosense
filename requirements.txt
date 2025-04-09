@@ -8,3 +8,5 @@ keras==2.13.1
 python-dotenv==1.0.0
 requests==2.31.0
 gunicorn==21.2.0
+xgboost==1.7.5
+beautifulsoup4==4.12.2  
